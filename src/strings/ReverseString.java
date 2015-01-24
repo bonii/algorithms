@@ -84,6 +84,7 @@ public class ReverseString {
 		System.out.println(inputString.reverseUsingStack());
 		System.out.println(inputString.reverseUsingCharArray());
 		System.out.println(inputString.reverseUsingStringBuilder());
+		in.close();
 	}
 
 }
