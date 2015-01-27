@@ -44,9 +44,9 @@ public class MergeSort<T extends Comparable<? super T>> {
 
 	public boolean areElementsOrdered(T firstElement, T secondElement) {
 		if (ascendingSortOrder) {
-			return firstElement.compareTo(secondElement) < 0;
+			return firstElement.compareTo(secondElement) <= 0;
 		} else {
-			return firstElement.compareTo(secondElement) > 0;
+			return firstElement.compareTo(secondElement) >= 0;
 		}
 	}
 

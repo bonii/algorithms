@@ -41,9 +41,9 @@ public class InsertionSort<T extends Comparable<? super T>> {
 
 	public boolean areElementsOrdered(T firstElement, T secondElement) {
 		if (ascendingSortOrder) {
-			return firstElement.compareTo(secondElement) < 0;
+			return firstElement.compareTo(secondElement) <= 0;
 		} else {
-			return firstElement.compareTo(secondElement) > 0;
+			return firstElement.compareTo(secondElement) >= 0;
 		}
 	}
 
@@ -71,7 +71,7 @@ public class InsertionSort<T extends Comparable<? super T>> {
 
 	public static void main(String[] args) {
 		Integer[] array = { 41, 95, -2, 100, 82, 34, 51, 12 };
-		InsertionSort<Integer> sorter = new InsertionSort<>(array, false);
+		InsertionSort<Integer> sorter = new InsertionSort<>(array, true);
 		sorter.sort();
 		for (Integer num : sorter.getInput()) {
 			System.out.print(num + " ");
