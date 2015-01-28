@@ -26,6 +26,8 @@
  **/
 package sorting;
 
+import utils.Utility;
+
 /**
  * Classic selection sort
  *
@@ -39,29 +41,19 @@ public class SelectionSort<T extends Comparable<? super T>> {
 		this.ascendingSortOrder = sortAscendingOrder;
 	}
 	
-	public boolean areElementsOrdered(T firstElement, T secondElement) {
-		if (ascendingSortOrder) {
-			return firstElement.compareTo(secondElement) <= 0;
-		} else {
-			return firstElement.compareTo(secondElement) >= 0;
-		}
-	}
-	
 	public void sort() {
 		if(input == null) {
 			return;
 		}
 		for(int i=0;i<input.length - 1;i++) {
-			int candidateIndex = i+1; 
+			int candidateIndex = i; 
 			for(int j=i+1;j<input.length;j++) {
-				if(!areElementsOrdered(input[candidateIndex], input[j])) {
+				if(!Utility.areElementsOrdered(input[candidateIndex], input[j], ascendingSortOrder)) {
 					candidateIndex = j;
 				}
 			}
 			//We need to swap candidateIndex and i
-			T temp = input[candidateIndex];
-			input[candidateIndex] = input[i];
-			input[i] = temp;
+			Utility.swap(input, candidateIndex, i);
 		}
 	}
 	
