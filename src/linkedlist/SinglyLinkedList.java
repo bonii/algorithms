@@ -36,13 +36,52 @@ import java.util.Set;
 public class SinglyLinkedList<T> implements SimpleCollection<T>,
 		SimpleQueue<T>, SimpleStack<T> {
 	private Node<T> head = null;
+	private Node<T> tail = null;
 
 	private void addAtHead(T data) {
 		Node<T> newNode = new Node<>(data);
 		newNode.setNext(head);
 		head = newNode;
+		if (tail == null)
+			tail = newNode;
 	}
-	
+
+	private void addAtTail(T data) {
+		Node<T> newNode = new Node<>(data);
+		if (tail != null)
+			tail.setNext(newNode);
+		tail = newNode;
+		if (head == null)
+			head = newNode;
+	}
+
+	private void removeHead() {
+		if (head == null) {
+			return;
+		}
+		if (head == tail) {
+			head = tail = null;
+		} else {
+			head = head.getNext();
+		}
+	}
+
+	private void removeTail() {
+		if (tail == null) {
+			return;
+		}
+		if (head == tail) {
+			head = tail = null;
+		} else {
+			Node<T> current = head;
+			while(current.getNext().getNext() != null) {
+				current = current.getNext();
+			}
+			current.setNext(null);
+			tail = current;
+		}
+	}
+
 	private Node<T> getNodeAfter(Node<T> startNode, int offset) {
 		Node<T> current = startNode;
 		for (int i = 0; i < offset; i++) {
@@ -82,20 +121,16 @@ public class SinglyLinkedList<T> implements SimpleCollection<T>,
 	private void deleteNode(Node<T> node) {
 		if (node != null) {
 			if (node.getNext() != null) {
+				if (node.getNext() == tail) {
+					tail = node;
+				}
 				node.setData(node.getNext().getData());
 				node.setNext(node.getNext().getNext());
 			} else {
-				// We need to delete the last node, do a full traversal in a
-				// single list, better implementations are also possible
-				if (node == head) {
-					head = null;
-					return;
-				}
-				Node<T> current = head;
-				while (current.getNext() != node) {
-					current = current.getNext();
-				}
-				current.setNext(null);
+				// We need to delete the tail node, do a full traversal in a
+				// single list, better implementations are possible (use a guard
+				// element)
+				removeTail();
 			}
 		}
 	}
@@ -106,16 +141,7 @@ public class SinglyLinkedList<T> implements SimpleCollection<T>,
 	}
 
 	public void add(T data) {
-		Node<T> current = head;
-		Node<T> newNode = new Node<>(data);
-		if (head == null) {
-			head = newNode;
-			return;
-		}
-		while (current.getNext() != null) {
-			current = current.getNext();
-		}
-		current.setNext(newNode);
+		addAtTail(data);
 	}
 
 	public void addAfter(int offset, T data) {
@@ -123,6 +149,8 @@ public class SinglyLinkedList<T> implements SimpleCollection<T>,
 		if (appendAtNode != null) {
 			Node<T> newNode = new Node<>(data, appendAtNode.getNext());
 			appendAtNode.setNext(newNode);
+		} else {
+			addAtTail(data);
 		}
 	}
 
@@ -131,6 +159,8 @@ public class SinglyLinkedList<T> implements SimpleCollection<T>,
 		if (appendAtNode != null) {
 			Node<T> newNode = new Node<>(data, appendAtNode.getNext());
 			appendAtNode.setNext(newNode);
+		} else {
+			addAtHead(data);
 		}
 	}
 
@@ -165,7 +195,7 @@ public class SinglyLinkedList<T> implements SimpleCollection<T>,
 			}
 		}
 		if (matchingNode(head, data)) {
-			head = head.getNext();
+			removeHead();
 			deletedNodes++;
 		}
 		return deletedNodes;
@@ -194,14 +224,14 @@ public class SinglyLinkedList<T> implements SimpleCollection<T>,
 			result.deleteCharAt(result.indexOf(",]"));
 		return result.toString();
 	}
-	
+
 	public void push(T data) {
 		addAtHead(data);
 	}
 
 	public T pop() {
 		T element = get(0);
-		deleteAfter(0);
+		removeHead();
 		return element;
 	}
 
@@ -216,7 +246,7 @@ public class SinglyLinkedList<T> implements SimpleCollection<T>,
 	public T peek() {
 		return get(0);
 	}
-	
+
 	public static void main(String[] args) {
 		SinglyLinkedList<Integer> newList = new SinglyLinkedList<>();
 		System.out.println(newList);
@@ -228,17 +258,24 @@ public class SinglyLinkedList<T> implements SimpleCollection<T>,
 		newList.add(6);
 		newList.add(7);
 		System.out.println(newList);
-		
+
 		SimpleQueue<Integer> myQueue = new SinglyLinkedList<>();
 		myQueue.enqueue(1);
 		myQueue.enqueue(2);
 		System.out.println(myQueue);
-		
+		myQueue.dequeue();
+		System.out.println(myQueue);
+		myQueue.dequeue();
+		System.out.println(myQueue);
+
 		SimpleStack<Integer> myStack = new SinglyLinkedList<>();
 		myStack.push(1);
 		myStack.push(2);
 		System.out.println(myStack);
+		myStack.pop();
+		System.out.println(myStack);
+		myStack.pop();
+		System.out.println(myStack);
 	}
-
 
 }
