@@ -78,7 +78,6 @@ public class BalancedBinaryTreeList<T extends Processor> implements
 		int counter = 0;
 		for (BinaryTreeNode<T> aNode : bfsTreeList) {
 			if (aNode.getData().equals(data)) {
-				System.out.println("Found it");
 				//Found the node to be deleted
 				if(counter == bfsTreeList.size() - 1) {
 					//Its the last node
