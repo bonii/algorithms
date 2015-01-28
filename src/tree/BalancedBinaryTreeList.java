@@ -39,102 +39,155 @@ public class BalancedBinaryTreeList<T extends Processor> implements
 		BinaryTree<T> {
 	private BinaryTreeNode<T> root = null;
 
-	private void add(T data, BinaryTreeNode<T> node) {
-		BinaryTreeNode<T> newNode = new BinaryTreeNode<>(data, null, null);
-		if (node == null) {
-			node = newNode;
-			if (root == null) {
-				root = newNode;
-				return;
-			}
-		}
-		Queue<BinaryTreeNode<T>> levelQueue = new ConcurrentLinkedDeque<>();
-		levelQueue.add(node);
-		while (!levelQueue.isEmpty()) {
-			BinaryTreeNode<T> currentNode = levelQueue.poll();
-			if (currentNode.getLeftTree() == null) {
-				currentNode.setLeftTree(newNode);
-				return;
-			} else if (currentNode.getRightTree() == null) {
-				currentNode.setRightTree(newNode);
-				return;
-			} else {
-				levelQueue.offer(currentNode.getLeftTree());
-				levelQueue.offer(currentNode.getRightTree());
-			}
-		}
-	}
-
-	private void delete(T data, BinaryTreeNode<T> node) {
-		if (node == null) {
+	private void setChild(List<BinaryTreeNode<T>> bfsNodeList, int childIndex, BinaryTreeNode<T> newNode) {
+		if(bfsNodeList == null) {
 			return;
 		}
-		// Not implemented
+		int parentIndex = (childIndex - 1) / 2;
+		if(bfsNodeList.size() - 1 < parentIndex) {
+			return;
+		}
+		if(childIndex % 2 == 1) {
+			bfsNodeList.get(parentIndex).setLeftTree(newNode);
+		} else {
+			bfsNodeList.get(parentIndex).setRightTree(newNode);
+		}
 	}
 
 	public void add(T data) {
 		if (data == null) {
 			return;
 		}
-		add(data, root);
+
+		BinaryTreeNode<T> newNode = new BinaryTreeNode<>(data, null, null);
+		if (root == null) {
+			root = newNode;
+			return;
+		}
+
+		List<BinaryTreeNode<T>> bfsList = new ArrayList<>();
+		traverseInBreadthFirstOrder(root, bfsList, true);
+		// We need to append at the end of the list so we need to find the right
+		// parent
+		setChild(bfsList, bfsList.size(), newNode);		
 	}
 
 	public void delete(T data) {
-		delete(data, root);
+		List<BinaryTreeNode<T>> bfsTreeList = new ArrayList<>();
+		traverseInBreadthFirstOrder(root, bfsTreeList, true);
+		int counter = 0;
+		for (BinaryTreeNode<T> aNode : bfsTreeList) {
+			if (aNode.getData().equals(data)) {
+				System.out.println("Found it");
+				//Found the node to be deleted
+				if(counter == bfsTreeList.size() - 1) {
+					//Its the last node
+					if(counter == 0) {
+						//Single node in a tree 
+						root = null;
+						return;
+					} else {
+						setChild(bfsTreeList, counter, null);
+						return;
+					}
+				} else {
+					aNode.setData(bfsTreeList.get(bfsTreeList.size()-1).getData());
+					setChild(bfsTreeList, bfsTreeList.size()-1,null);
+					return;
+				}
+			}
+			counter++;
+		}
 	}
 
-	private void processInPreOrder(BinaryTreeNode<T> node,
-			List<BinaryTreeNode<T>> resultSet) {
-		if (node == null || resultSet == null) {
+	private void processNodes(List<BinaryTreeNode<T>> nodeList) {
+		if (nodeList == null)
+			return;
+
+		for (BinaryTreeNode<T> node : nodeList) {
+			node.getData().process();
+		}
+	}
+
+	private void traverseInBreadthFirstOrder(BinaryTreeNode<T> rootNode,
+			List<BinaryTreeNode<T>> resultList, boolean leftToRight) {
+		if (rootNode == null || resultList == null) {
 			return;
 		}
-		resultSet.add(node);
-		processInPreOrder(node.getLeftTree(), resultSet);
-		processInPreOrder(node.getRightTree(), resultSet);
+		Queue<BinaryTreeNode<T>> levelQueue = new ConcurrentLinkedDeque<>();
+		levelQueue.add(rootNode);
+		while (!levelQueue.isEmpty()) {
+			BinaryTreeNode<T> node = levelQueue.poll();
+			resultList.add(node);
+			if (leftToRight) {
+				if (node.getLeftTree() != null) {
+					levelQueue.add(node.getLeftTree());
+				}
+				if (node.getRightTree() != null) {
+					levelQueue.add(node.getRightTree());
+				}
+			} else {
+				if (node.getRightTree() != null) {
+					levelQueue.add(node.getRightTree());
+				}
+				if (node.getLeftTree() != null) {
+					levelQueue.add(node.getLeftTree());
+				}
+			}
+		}
 	}
 
-	private void processInOrder(BinaryTreeNode<T> node,
-			List<BinaryTreeNode<T>> resultSet) {
+	private void traverseInPreOrder(BinaryTreeNode<T> node,
+			List<BinaryTreeNode<T>> resultList) {
+		if (node == null || resultList == null) {
+			return;
+		}
+		resultList.add(node);
+		traverseInPreOrder(node.getLeftTree(), resultList);
+		traverseInPreOrder(node.getRightTree(), resultList);
+	}
+
+	private void traverseInOrder(BinaryTreeNode<T> node,
+			List<BinaryTreeNode<T>> resultList) {
 		if (node == null) {
 			return;
 		}
-		processInOrder(node.getLeftTree(), resultSet);
-		resultSet.add(node);
-		processInOrder(node.getRightTree(), resultSet);
+		traverseInOrder(node.getLeftTree(), resultList);
+		resultList.add(node);
+		traverseInOrder(node.getRightTree(), resultList);
 	}
 
-	private void processInPostOrder(BinaryTreeNode<T> node,
-			List<BinaryTreeNode<T>> resultSet) {
+	private void traverseInPostOrder(BinaryTreeNode<T> node,
+			List<BinaryTreeNode<T>> resultList) {
 		if (node == null) {
 			return;
 		}
-		processInPostOrder(node.getLeftTree(), resultSet);
-		processInPostOrder(node.getRightTree(), resultSet);
-		resultSet.add(node);
+		traverseInPostOrder(node.getLeftTree(), resultList);
+		traverseInPostOrder(node.getRightTree(), resultList);
+		resultList.add(node);
 	}
 
-	public void processInPreOrder() {
-		List<BinaryTreeNode<T>> resultSet = new ArrayList<>();
-		processInPreOrder(root, resultSet);
-		for (BinaryTreeNode<T> node : resultSet) {
-			node.getData().process();
+	public void traverseAndProcess(TreeTraversalType traversalType) {
+		List<BinaryTreeNode<T>> resultList = new ArrayList<>();
+		// Java needs inline case labels as constant expressions so no class
+		// qualifiers before the enum
+		switch (traversalType) {
+		case DEPTH_FIRST_PRE_ORDER:
+			traverseInPreOrder(root, resultList);
+			break;
+		case DEPTH_FIRST_IN_ORDER:
+			traverseInOrder(root, resultList);
+			break;
+		case DEPTH_FIRST_POST_ORDER:
+			traverseInPostOrder(root, resultList);
+			break;
+		case BREADTH_FIRST_LEFT_TO_RIGHT:
+			traverseInBreadthFirstOrder(root, resultList, true);
+			break;
+		case BREADTH_FIRST_RIGHT_TO_LEFT:
+			traverseInBreadthFirstOrder(root, resultList, false);
 		}
-	}
-
-	public void processInOrder() {
-		List<BinaryTreeNode<T>> resultSet = new ArrayList<>();
-		processInOrder(root, resultSet);
-		for (BinaryTreeNode<T> node : resultSet) {
-			node.getData().process();
-		}
-	}
-
-	public void processInPostOrder() {
-		List<BinaryTreeNode<T>> resultSet = new ArrayList<>();
-		processInPostOrder(root, resultSet);
-		for (BinaryTreeNode<T> node : resultSet) {
-			node.getData().process();
-		}
+		processNodes(resultList);
 	}
 
 	public static void main(String[] args) {
@@ -146,11 +199,17 @@ public class BalancedBinaryTreeList<T extends Processor> implements
 		myList.add(new StringProcessor("e"));
 		myList.add(new StringProcessor("f"));
 		myList.add(new StringProcessor("g"));
-		myList.processInPreOrder();
+		myList.traverseAndProcess(TreeTraversalType.DEPTH_FIRST_PRE_ORDER);
 		System.out.println();
-		myList.processInOrder();
+		myList.traverseAndProcess(TreeTraversalType.DEPTH_FIRST_IN_ORDER);
 		System.out.println();
-		myList.processInPostOrder();
+		myList.traverseAndProcess(TreeTraversalType.DEPTH_FIRST_POST_ORDER);
+		System.out.println();
+		myList.traverseAndProcess(TreeTraversalType.BREADTH_FIRST_LEFT_TO_RIGHT);
+		System.out.println();
+		myList.traverseAndProcess(TreeTraversalType.BREADTH_FIRST_LEFT_TO_RIGHT);
+		System.out.println();
+		myList.traverseAndProcess(TreeTraversalType.BREADTH_FIRST_RIGHT_TO_LEFT);
 	}
 
 }

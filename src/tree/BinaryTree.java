@@ -49,18 +49,11 @@ public interface BinaryTree<T> {
 	public void delete(T data);
 
 	/**
-	 * Process the nodes in pre-order
+	 * Process the nodes by traversing the tree in the way specified
+	 * 
+	 * @param traversalType
+	 *            the way to traverse the tree
 	 */
-	public void processInPreOrder();
-
-	/**
-	 * Process the nodes in order
-	 */
-	public void processInOrder();
-
-	/**
-	 * Process the nodes in post order
-	 */
-	public void processInPostOrder();
+	public void traverseAndProcess(TreeTraversalType traversalType);
 
 }

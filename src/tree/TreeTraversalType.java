@@ -21,37 +21,15 @@
  * SOFTWARE.
 
  * Author Vivek Shah <bonii at kernelspace.in>
- * StringProcessor.java created on Jan 27, 2015
+ * TreeTraversalType.java created on Jan 28, 2015
  *
  **/
 package tree;
 
 /**
- * A processor to wrap a string element
+ * Ways to traverse a tree
+ * 
  */
-public class StringProcessor implements Processor {
-	private String myString;
-
-	public StringProcessor(String myString) {
-		this.myString = myString;
-	}
-
-	public void process() {
-		System.out.print(myString + ",");
-	}
-	
-	public String getString() {
-		return myString;
-	}
-	
-	public boolean equals(Object someObject) {
-		StringProcessor stringProcessorObject = null;
-		if(someObject instanceof StringProcessor) {
-			stringProcessorObject = (StringProcessor)someObject;
-		} else {
-			return false;
-		}
-		return (someObject == this) || myString.equals(stringProcessorObject.getString());
-	}
-
+public enum TreeTraversalType {
+	DEPTH_FIRST_PRE_ORDER, DEPTH_FIRST_IN_ORDER, DEPTH_FIRST_POST_ORDER, BREADTH_FIRST_LEFT_TO_RIGHT, BREADTH_FIRST_RIGHT_TO_LEFT;
 }
