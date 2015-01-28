@@ -26,6 +26,8 @@
  **/
 package sorting;
 
+import utils.Utility;
+
 /**
  * Insertion Sort
  * Best case -> n
@@ -39,14 +41,6 @@ public class InsertionSort<T extends Comparable<? super T>> {
 		this.ascendingSortOrder = sortAscendingOrder;
 	}
 
-	public boolean areElementsOrdered(T firstElement, T secondElement) {
-		if (ascendingSortOrder) {
-			return firstElement.compareTo(secondElement) <= 0;
-		} else {
-			return firstElement.compareTo(secondElement) >= 0;
-		}
-	}
-
 	public void sort() {
 		if (input == null) {
 			return;
@@ -57,7 +51,7 @@ public class InsertionSort<T extends Comparable<? super T>> {
 			int sortedIndex = i;
 			//Check elements to the left with value to determine the correct place of value
 			while (sortedIndex > 0
-					&& (!areElementsOrdered(input[sortedIndex - 1], value))) {
+					&& (!Utility.areElementsOrdered(input[sortedIndex - 1], value, ascendingSortOrder))) {
 				input[sortedIndex] = input[sortedIndex - 1];
 				sortedIndex--;
 			}

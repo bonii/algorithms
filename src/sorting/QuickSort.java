@@ -26,6 +26,8 @@
  **/
 package sorting;
 
+import utils.Utility;
+
 /**
  * Classic Quick Sort
  * 
@@ -37,24 +39,6 @@ public class QuickSort<T extends Comparable<? super T>> {
 	QuickSort(T[] input, boolean sortAscendingOrder) {
 		this.input = input;
 		this.ascendingSortOrder = sortAscendingOrder;
-	}
-
-	public boolean areElementsOrdered(T firstElement, T secondElement) {
-		if (ascendingSortOrder) {
-			return firstElement.compareTo(secondElement) <= 0;
-		} else {
-			return firstElement.compareTo(secondElement) >= 0;
-		}
-	}
-
-	private void swap(T[] input, int index1, int index2) {
-		if (input == null) {
-			return;
-		}
-
-		T temp = input[index1];
-		input[index1] = input[index2];
-		input[index2] = temp;
 	}
 
 	/**
@@ -73,16 +57,16 @@ public class QuickSort<T extends Comparable<? super T>> {
 		int pivotIndex = chooseInitialPivot(beginIndex, endIndex);
 		T pivotValue = input[pivotIndex];
 
-		swap(input, pivotIndex, endIndex);
+		Utility.swap(input, pivotIndex, endIndex);
 		int storeIndex = beginIndex;
 
 		for (int i = beginIndex; i < endIndex; i++) {
-			if (areElementsOrdered(input[i], pivotValue)) {
-				swap(input, storeIndex, i);
+			if (Utility.areElementsOrdered(input[i], pivotValue, ascendingSortOrder)) {
+				Utility.swap(input, storeIndex, i);
 				storeIndex++;
 			}
 		}
-		swap(input, storeIndex, endIndex);
+		Utility.swap(input, storeIndex, endIndex);
 		return storeIndex;
 	}
 

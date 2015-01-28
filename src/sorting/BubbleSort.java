@@ -26,6 +26,8 @@
  **/
 package sorting;
 
+import utils.Utility;
+
 /**
  * Classic BubbleSort or Sinking Sort (Art of Computer Programming)
  * Best case -> n
@@ -40,14 +42,6 @@ public class BubbleSort<T extends Comparable<? super T>> {
 		this.ascendingSortOrder = sortAscendingOrder;
 	}
 
-	public boolean areElementsOrdered(T firstElement, T secondElement) {
-		if (ascendingSortOrder) {
-			return firstElement.compareTo(secondElement) <= 0;
-		} else {
-			return firstElement.compareTo(secondElement) >= 0;
-		}
-	}
-	
 	public void sort() {
 		if (input == null) {
 			return;
@@ -56,10 +50,8 @@ public class BubbleSort<T extends Comparable<? super T>> {
 		while (lastSwapped > 0) {
 			int lastSwappedCopy = 0;
 			for (int i = 0; i < lastSwapped; i++) {
-				if (!areElementsOrdered(input[i], input[i + 1])) {
-					T temp = input[i + 1];
-					input[i + 1] = input[i];
-					input[i] = temp;
+				if (!Utility.areElementsOrdered(input[i], input[i + 1],ascendingSortOrder)) {
+					Utility.swap(input, i, i+1);
 					lastSwappedCopy = i + 1;
 				}
 			}

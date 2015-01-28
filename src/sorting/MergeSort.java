@@ -28,6 +28,8 @@ package sorting;
 
 import java.lang.reflect.Array;
 
+import utils.Utility;
+
 /**
  * Classic Merge Sort (Split in half and merge)
  */
@@ -42,18 +44,10 @@ public class MergeSort<T extends Comparable<? super T>> {
 		this.ascendingSortOrder = sortAscendingOrder;
 	}
 
-	public boolean areElementsOrdered(T firstElement, T secondElement) {
-		if (ascendingSortOrder) {
-			return firstElement.compareTo(secondElement) <= 0;
-		} else {
-			return firstElement.compareTo(secondElement) >= 0;
-		}
-	}
-
 	private void merge(int beginIndex, int middleIndex, int endIndex) {
 		int beginIndex1 = beginIndex, endIndex1 = middleIndex, beginIndex2 = middleIndex + 1, endIndex2 = endIndex,beginIndexResult=beginIndex,endIndexResult=endIndex;
 		while(beginIndexResult <= endIndexResult && (beginIndex1 <= endIndex1) && (beginIndex2 <= endIndex2)) {
-			if(areElementsOrdered(input[beginIndex1], input[beginIndex2])) {
+			if(Utility.areElementsOrdered(input[beginIndex1], input[beginIndex2],ascendingSortOrder)) {
 				output[beginIndexResult++] = input[beginIndex1++];
 			} else {
 				output[beginIndexResult++] = input[beginIndex2++];
