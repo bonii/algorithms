@@ -247,6 +247,22 @@ public class SinglyLinkedList<T> implements SimpleCollection<T>,
 		return get(0);
 	}
 
+	public void reverse() {
+		if(head == null) {
+			return;
+		}
+		Node<T> current = head;
+		Node<T> previous = null;
+		tail = head;
+		while(current != null) {
+			Node<T> temp = current.getNext();
+			current.setNext(previous);
+			previous = current;
+			current = temp;
+		}
+		head = previous;
+	}
+
 	public static void main(String[] args) {
 		SinglyLinkedList<Integer> newList = new SinglyLinkedList<>();
 		System.out.println(newList);
@@ -258,7 +274,9 @@ public class SinglyLinkedList<T> implements SimpleCollection<T>,
 		newList.add(6);
 		newList.add(7);
 		System.out.println(newList);
-
+		newList.reverse();
+		System.out.println(newList);
+		
 		SimpleQueue<Integer> myQueue = new SinglyLinkedList<>();
 		myQueue.enqueue(1);
 		myQueue.enqueue(2);
@@ -277,5 +295,7 @@ public class SinglyLinkedList<T> implements SimpleCollection<T>,
 		myStack.pop();
 		System.out.println(myStack);
 	}
+
+
 
 }

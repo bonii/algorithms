@@ -91,4 +91,10 @@ public interface SimpleCollection<T> {
 	 * @return the string representation
 	 */
 	public String toString();
+	
+	/**
+	 * Reverses a linked list in place
+	 */
+	public void reverse();
+	
 }
