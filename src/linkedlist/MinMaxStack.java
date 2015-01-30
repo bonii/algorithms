@@ -26,6 +26,7 @@
  **/
 package linkedlist;
 
+import interfaces.MinMax;
 import interfaces.SimpleStack;
 
 /**

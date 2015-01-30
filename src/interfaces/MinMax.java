@@ -24,7 +24,7 @@
  * MinMax.java created on Jan 30, 2015
  *
  **/
-package linkedlist;
+package interfaces;
 
 /**
  * Min max functions must be O(1) operation
