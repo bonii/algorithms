@@ -21,32 +21,41 @@
  * SOFTWARE.
 
  * Author Vivek Shah <bonii at kernelspace.in>
- * SimpleQueue.java created on Jan 26, 2015
+ * BinaryTree.java created on Jan 27, 2015
  *
  **/
-package linkedlist;
+package interfaces;
+
+import tree.TreeTraversalType;
 
 /**
- * Simple queue operations
- *
+ * Interface for a binary tree
+ * 
  */
-public interface SimpleQueue<T> {
+public interface BinaryTree<T> extends BasicDataStructure {
 
 	/**
-	 * Enqueue an element at the end of the queue
-	 * @param data the element to be enqueued
+	 * Add an element to the binary tree
+	 * 
+	 * @param data
+	 *            the element to be added
 	 */
-	public void enqueue(T data) ;
-	
+	public void add(T data);
+
 	/**
-	 * Dequeue an element from the front of the queue
-	 * @return the element at the front of the queue
+	 * Delete a node from the tree
+	 * 
+	 * @param data
+	 *            the element to be deleted
 	 */
-	public T dequeue();
-	
+	public void delete(T data);
+
 	/**
-	 * Peek into the queue
-	 * @return the element at the front of the queue
+	 * Process the nodes by traversing the tree in the way specified
+	 * 
+	 * @param traversalType
+	 *            the way to traverse the tree
 	 */
-	public T peek();
+	public void traverseAndProcess(TreeTraversalType traversalType);
+
 }

@@ -24,14 +24,14 @@
  * List.java created on Jan 24, 2015
  *
  **/
-package linkedlist;
+package interfaces;
 
 import java.util.Set;
 
 /**
  * Operations available on a list
  */
-public interface SimpleCollection<T> {
+public interface SimpleCollection<T> extends BasicDataStructure {
 
 	/**
 	 * Add element at the end of list

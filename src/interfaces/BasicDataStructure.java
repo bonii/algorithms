@@ -21,31 +21,20 @@
  * SOFTWARE.
 
  * Author Vivek Shah <bonii at kernelspace.in>
- * SimpleStack.java created on Jan 26, 2015
+ * BasicDataStructure.java created on Jan 30, 2015
  *
  **/
-package linkedlist;
+package interfaces;
 
 /**
- * Simple stack operations
+ * Defines basic datastructure operations
  */
-public interface SimpleStack<T> {
+public interface BasicDataStructure {
 
 	/**
-	 * Push an element at the top of the stack
-	 * @param the element to be pushed in the stack
+	 * Checks if the data-structure is empty
+	 * 
+	 * @return the result whether the data-structure is empty
 	 */
-	public void push(T data);
-	
-	/**
-	 * Pop an element from the top of the stack
-	 * @return the element to be popped from the stack
-	 */
-	public T pop();
-	
-	/**
-	 * Peek into the top of the stack
-	 * @return the element at the top of the stack
-	 */
-	public T peek();
+	public boolean isEmpty();
 }

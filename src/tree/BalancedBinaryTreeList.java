@@ -26,6 +26,8 @@
  **/
 package tree;
 
+import interfaces.BinaryTree;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;
@@ -187,6 +189,10 @@ public class BalancedBinaryTreeList<T extends Processor> implements
 			traverseInBreadthFirstOrder(root, resultList, false);
 		}
 		processNodes(resultList);
+	}
+	
+	public boolean isEmpty() {
+		return (root == null);
 	}
 
 	public static void main(String[] args) {

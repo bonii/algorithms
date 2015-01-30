@@ -21,39 +21,30 @@
  * SOFTWARE.
 
  * Author Vivek Shah <bonii at kernelspace.in>
- * BinaryTree.java created on Jan 27, 2015
+ * MinMax.java created on Jan 30, 2015
  *
  **/
-package tree;
+package linkedlist;
 
 /**
- * Interface for a binary tree
- * 
+ * Min max functions must be O(1) operation
  */
-public interface BinaryTree<T> {
+public interface MinMax<T> {
 
 	/**
-	 * Add an element to the binary tree
+	 * Get the minimum data element in the stack without removing it from the
+	 * stack
 	 * 
-	 * @param data
-	 *            the element to be added
+	 * @return the minimum data element
 	 */
-	public void add(T data);
+	public T getMin();
 
 	/**
-	 * Delete a node from the tree
+	 * Get the maximum data element in the stack without removing it from the
+	 * stack
 	 * 
-	 * @param data
-	 *            the element to be deleted
+	 * @return the maximum data element
 	 */
-	public void delete(T data);
-
-	/**
-	 * Process the nodes by traversing the tree in the way specified
-	 * 
-	 * @param traversalType
-	 *            the way to traverse the tree
-	 */
-	public void traverseAndProcess(TreeTraversalType traversalType);
+	public T getMax();
 
 }

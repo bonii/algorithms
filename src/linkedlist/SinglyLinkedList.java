@@ -26,6 +26,10 @@
  **/
 package linkedlist;
 
+import interfaces.SimpleCollection;
+import interfaces.SimpleQueue;
+import interfaces.SimpleStack;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -74,7 +78,7 @@ public class SinglyLinkedList<T> implements SimpleCollection<T>,
 			head = tail = null;
 		} else {
 			Node<T> current = head;
-			while(current.getNext().getNext() != null) {
+			while (current.getNext().getNext() != null) {
 				current = current.getNext();
 			}
 			current.setNext(null);
@@ -248,19 +252,24 @@ public class SinglyLinkedList<T> implements SimpleCollection<T>,
 	}
 
 	public void reverse() {
-		if(head == null) {
+		if (head == null) {
 			return;
 		}
 		Node<T> current = head;
 		Node<T> previous = null;
 		tail = head;
-		while(current != null) {
+		while (current != null) {
 			Node<T> temp = current.getNext();
 			current.setNext(previous);
 			previous = current;
 			current = temp;
 		}
 		head = previous;
+	}
+
+	public boolean isEmpty() {
+		return (head == null && tail == null); // Defensive programming to find
+												// bugs in head tail assignments
 	}
 
 	public static void main(String[] args) {
@@ -276,7 +285,7 @@ public class SinglyLinkedList<T> implements SimpleCollection<T>,
 		System.out.println(newList);
 		newList.reverse();
 		System.out.println(newList);
-		
+
 		SimpleQueue<Integer> myQueue = new SinglyLinkedList<>();
 		myQueue.enqueue(1);
 		myQueue.enqueue(2);
@@ -295,7 +304,5 @@ public class SinglyLinkedList<T> implements SimpleCollection<T>,
 		myStack.pop();
 		System.out.println(myStack);
 	}
-
-
 
 }
