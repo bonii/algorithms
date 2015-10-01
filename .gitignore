@@ -1,4 +1,13 @@
 *.class
+*~
+
+#Try to make it build agnostic for now
+.classpath 
+.settings/
+
+#Try to make it IDE agnostic for now
+.project
+
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
